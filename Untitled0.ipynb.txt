@@ -1,0 +1,75 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "KGwNvphNSJTb",
+        "outputId": "98d8db6e-5433-4c19-9202-3e7f281b6e89"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Index(['customerID', 'gender', 'SeniorCitizen', 'Partner', 'Dependents',\n",
+            "       'tenure', 'PhoneService', 'MultipleLines', 'InternetService',\n",
+            "       'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport',\n",
+            "       'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling',\n",
+            "       'PaymentMethod', 'MonthlyCharges', 'TotalCharges', 'Churn'],\n",
+            "      dtype='object')\n",
+            "Model Accuracy: 75.44357700496806%\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Step 1: Zaroori libraries (tools) ko bulana\n",
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.ensemble import RandomForestClassifier\n",
+        "from sklearn.metrics import accuracy_score\n",
+        "\n",
+        "# Step 2: Real CSV file ko load karna\n",
+        "df = pd.read_csv('churn_data.csv')\n",
+        "print(df.columns)\n",
+        "\n",
+        "\n",
+        "# Step 3: Features aur Target alag karna\n",
+        "# (Kaggle dataset ke hisab se columns ke naam check kar lena, abhi ke liye ye try karo)\n",
+        "X = df[['tenure', 'MonthlyCharges']]\n",
+        "y = df['Churn']\n",
+        "\n",
+        "\n",
+        "# Step 4: Data ko Train aur Test mein baantna (80% training, 20% testing)\n",
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n",
+        "\n",
+        "# Step 5: AI Model (Random Forest) ko train karna\n",
+        "model = RandomForestClassifier(random_state=42)\n",
+        "model.fit(X_train, y_train)  # Yahan model patterns seekh raha hai\n",
+        "\n",
+        "# Step 6: Test karna aur accuracy check karna\n",
+        "predictions = model.predict(X_test)\n",
+        "accuracy = accuracy_score(y_test, predictions)\n",
+        "\n",
+        "print(f\"Model Accuracy: {accuracy * 100}%\")"
+      ]
+    }
+  ]
+}
